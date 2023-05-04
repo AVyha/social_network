@@ -4,15 +4,18 @@ from fastapi import APIRouter, Depends
 from app.auth.database import User, async_session_maker
 from app.auth.utils import current_active_user
 
-router = APIRouter()
+router = APIRouter(
+    prefix="/user",
+    tags=["users"]
+)
 
 
-@router.get("/user/me")
+@router.get("/me")
 def get_user_page(user: User = Depends(current_active_user)):
     return {"status code": 200, "username": user.username}
 
 
-@router.get("/user/{username}", dependencies=[Depends(current_active_user)])
+@router.get("/{username}", dependencies=[Depends(current_active_user)])
 async def get_user_by_username(username: str):
     query = select(User).where(User.username == username)
 
