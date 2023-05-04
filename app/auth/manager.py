@@ -4,7 +4,7 @@ from typing import Optional
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, UUIDIDMixin
 
-from auth.database import User, get_user_db
+from app.auth.database import User, get_user_db
 
 SECRET = "SECRET"
 
