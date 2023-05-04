@@ -1,5 +1,8 @@
 from typing import AsyncGenerator
 
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.database import engine, Base
 
 from fastapi import Depends
@@ -8,11 +11,16 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
-    pass
+    __table_args__ = {"extend_existing": True}
+
+    username: Mapped[str] = mapped_column(
+            String(length=20), unique=True, index=True, nullable=False
+        )
+    likes: Mapped[list["Post"]] = relationship("Post", secondary="PostDetails", back_populates="user")
 
 
 engine = engine
-async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+async_session_maker = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
 
 # async def create_db_and_tables():
