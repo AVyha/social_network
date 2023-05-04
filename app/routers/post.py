@@ -56,7 +56,7 @@ async def like_post(post_id: int, user: User = Depends(current_active_user)):
                 post_id=post_id,
                 user_id=user.id
             )
-            status = 201
+            status = 200
         else:
             like = post_details.delete().where(
                 post_details.c.post_id == post_id,
