@@ -19,4 +19,5 @@ class Post(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     text: Mapped[str] = mapped_column(String(length=255), nullable=False)
+    author: Mapped[str] = mapped_column(String(length=20), nullable=False)
     likes: Mapped[list["User"]] = relationship("User", secondary="PostDetails", backref="post")
