@@ -2,16 +2,20 @@ import uvicorn
 from fastapi import FastAPI, Depends
 
 from app.auth.auth import auth_backend
-from app.auth.utils import fastapi_users
+from app.auth.utils import fastapi_users, current_active_user
 from app.schemas.auth import UserRead, UserCreate
 
-from routers.user import router as user_router, current_active_user
+from routers.user import router as user_router
+from routers.post import router as post_router
 
 app = FastAPI()
 
 app.include_router(
-    user_router,
-    tags=["users"]
+    user_router
+)
+
+app.include_router(
+    post_router
 )
 
 app.include_router(
