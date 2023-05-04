@@ -8,5 +8,5 @@ follows = Table(
     Base.metadata,
     Column("id", Integer, primary_key=True),
     Column("user_id", UUID(as_uuid=True), ForeignKey("user.id")),
-    Column("post_id", Integer, ForeignKey("user.id"))
+    Column("follower_id", UUID(as_uuid=True), ForeignKey("user.id"))
 )
