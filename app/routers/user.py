@@ -1,8 +1,9 @@
 from sqlalchemy import select
 from fastapi import APIRouter, Depends
 
-from app.auth.database import User, async_session_maker
+from app.auth.database import async_session_maker
 from app.auth.utils import current_active_user
+from app.models.user import User
 
 router = APIRouter(
     prefix="/user",
