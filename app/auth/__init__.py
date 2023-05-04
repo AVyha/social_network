@@ -1,1 +1,1 @@
-from app.models.post import Post, PostDetails
+from app.models.post import Post

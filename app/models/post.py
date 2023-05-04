@@ -1,17 +1,16 @@
-from sqlalchemy import String, Integer
+from sqlalchemy import String, Integer, Table, Column, ForeignKey, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.auth.database import User
 from app.database import Base
 
 
-class PostDetails(Base):
-    __tablename__ = "post_user_likes"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-
-    user_id: Mapped[int] = mapped_column(Integer)
-    post_id: Mapped[int] = mapped_column(Integer)
+post_details = Table(
+    "post_user_likes",
+    Base.metadata,
+    Column("id", Integer, primary_key=True),
+    Column("user_id", UUID(as_uuid=True), ForeignKey("user.id")),
+    Column("post_id", Integer, ForeignKey("post.id"))
+)
 
 
 class Post(Base):
@@ -20,4 +19,4 @@ class Post(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     text: Mapped[str] = mapped_column(String(length=255), nullable=False)
     author: Mapped[str] = mapped_column(String(length=20), nullable=False)
-    likes: Mapped[list["User"]] = relationship("User", secondary="PostDetails", backref="post")
+    likes = relationship("User", secondary=post_details, backref="post")

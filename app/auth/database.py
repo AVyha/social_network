@@ -9,6 +9,8 @@ from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseUserTableUUID, SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from app.models.post import post_details
+
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
     __table_args__ = {"extend_existing": True}
@@ -16,7 +18,7 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
     username: Mapped[str] = mapped_column(
             String(length=20), unique=True, index=True, nullable=False
         )
-    likes: Mapped[list["Post"]] = relationship("Post", secondary="PostDetails", back_populates="user")
+    likes = relationship("Post", secondary=post_details, backref="user")
 
 
 engine = engine
