@@ -12,4 +12,5 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
     username: Mapped[str] = mapped_column(
             String(length=20), unique=True, index=True, nullable=False
         )
-    likes = relationship("Post", secondary=post_details, backref="user")
+    likes = relationship("Post", secondary=post_details, back_populates="user")
+    follows: Mapped[list["Follows"]] = relationship(back_populates="user")

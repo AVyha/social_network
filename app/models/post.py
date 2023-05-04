@@ -19,4 +19,4 @@ class Post(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     text: Mapped[str] = mapped_column(String(length=255), nullable=False)
     author: Mapped[str] = mapped_column(String(length=20), nullable=False)
-    likes = relationship("User", secondary=post_details, backref="post")
+    likes = relationship("User", secondary=post_details, back_populates="post")

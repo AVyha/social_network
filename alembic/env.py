@@ -1,4 +1,3 @@
-import os
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -6,7 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-import app.auth.database
+import app.models
 import app.database
 from app.config import DB_USER, DB_HOST, DB_PASSWORD, DB_NAME
 
