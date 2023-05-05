@@ -15,7 +15,7 @@ router = APIRouter(
 
 @router.post("/create")
 async def create_post(text: CreatePost, user: User = Depends(current_active_user)):
-    query = insert(Post).values(text=text.text, author=user.username)
+    query = insert(Post).values(text=text.text, author=user.username, author_id=user.id)
 
     async with async_session_maker() as session:
         await session.execute(query)
