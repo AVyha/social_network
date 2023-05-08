@@ -34,25 +34,24 @@ async def get_user_by_username(username: str):
 
 @router.get("/follow/{username}")
 async def follow_to_user(username: str, user: User = Depends(current_active_user)):
-    query = select(User).where(
+    user_query = select(User).where(
         User.username == username
     )
 
     async with async_session_maker() as session:
-        response = await session.execute(query)
+        response = await session.execute(user_query)
 
         user_to_follow = response.fetchone()[0]
 
         if user_to_follow is None or user_to_follow.id == user.id:
             return {"status code": 404}
 
-    query = select(Follow).where(
-        Follow.user_id == user.id,
-        Follow.follower_id == user_to_follow.id
-    )
+        follow_query = select(Follow).where(
+            Follow.user_id == user.id,
+            Follow.follower_id == user_to_follow.id
+        )
 
-    async with async_session_maker() as session:
-        response = await session.execute(query)
+        response = await session.execute(follow_query)
 
         result = response.first()
 
