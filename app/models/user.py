@@ -3,7 +3,7 @@ from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
-from app.models.post import post_details
+from app.models.post import post_details, post_comments
 
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
@@ -13,3 +13,4 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
             String(length=20), unique=True, index=True, nullable=False
         )
     likes = relationship("Post", secondary=post_details, backref="user")
+    comment = relationship("Post", secondary=post_comments, backref="user")
