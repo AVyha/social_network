@@ -9,6 +9,7 @@ from routers.user import router as user_router
 from routers.post import router as post_router
 from routers.feed import router as feed_router
 from routers.comments import router as comment_router
+from routers.message import router as message_router
 
 app = FastAPI()
 
@@ -26,6 +27,10 @@ app.include_router(
 
 app.include_router(
     comment_router
+)
+
+app.include_router(
+    message_router
 )
 
 app.include_router(
