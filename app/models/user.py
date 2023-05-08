@@ -13,4 +13,4 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
             String(length=20), unique=True, index=True, nullable=False
         )
     likes = relationship("Post", secondary=post_details, backref="user")
-    comment = relationship("Post", secondary=post_comments, backref="user")
+    comment = relationship("Post", secondary=post_comments, backref="user_comment")

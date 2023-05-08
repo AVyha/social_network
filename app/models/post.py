@@ -22,7 +22,8 @@ post_comments = Table(
     Column("user_id", UUID(as_uuid=True), ForeignKey("user.id")),
     Column("post_id", Integer, ForeignKey("post.id")),
     Column("text", String(255), nullable=False),
-    Column("date", DateTime, default=datetime.datetime.utcnow)
+    Column("date", DateTime, default=datetime.datetime.utcnow),
+    Column("username", String(20))
 )
 
 
@@ -34,4 +35,4 @@ class Post(Base):
     author: Mapped[str] = mapped_column(String(length=20), nullable=False)
     author_id = Column(UUID(as_uuid=True), nullable=False)
     likes = relationship("User", secondary=post_details, backref="post")
-    comments = relationship("User", secondary=post_comments, backref="post")
+    comments = relationship("User", secondary=post_comments, backref="post_comment")
