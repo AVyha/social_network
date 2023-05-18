@@ -5,11 +5,11 @@ from app.auth.auth import auth_backend
 from app.auth.utils import fastapi_users, current_active_user
 from app.schemas.auth import UserRead, UserCreate
 
-from routers.user import router as user_router
-from routers.post import router as post_router
-from routers.feed import router as feed_router
-from routers.comments import router as comment_router
-from routers.message import router as message_router
+from app.routers.user import router as user_router
+from app.routers.post import router as post_router
+from app.routers.feed import router as feed_router
+from app.routers.comments import router as comment_router
+from app.routers.message import router as message_router
 
 app = FastAPI()
 
@@ -52,4 +52,4 @@ def index():
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True)
+    uvicorn.run("app.main:app", reload=True, host="0.0.0.0", port=8000)
