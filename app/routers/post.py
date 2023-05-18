@@ -1,11 +1,13 @@
-from fastapi import APIRouter, Depends
+import io
+
+from fastapi import APIRouter, Depends, UploadFile, File
 from sqlalchemy import select, insert
+from starlette.responses import StreamingResponse
 
 from app.auth.database import async_session_maker
 from app.auth.utils import current_active_user
 from app.models.post import Post, post_details
 from app.models.user import User
-from app.schemas.post import CreatePost
 
 router = APIRouter(
     prefix="/post",
@@ -14,8 +16,11 @@ router = APIRouter(
 
 
 @router.post("/create")
-async def create_post(text: CreatePost, user: User = Depends(current_active_user)):
-    query = insert(Post).values(text=text.text, author=user.username, author_id=user.id)
+async def create_post(text: str, file: UploadFile = File(None), user: User = Depends(current_active_user)):
+    query = insert(Post).values(text=text, author=user.username, author_id=user.id)
+
+    if file:
+        query = query.values(file=file.file.read())
 
     async with async_session_maker() as session:
         await session.execute(query)
@@ -35,6 +40,13 @@ async def get_post(post_id: int, user: User = Depends(current_active_user)):
 
     if post is None:
         return {"status code": 404}
+
+    file_data = post[0].file
+
+    if file_data is not None:
+        file_stream = io.BytesIO(file_data)
+        return StreamingResponse(file_stream, media_type='application/octet-stream',
+                                 headers={'Content-Disposition': 'attachment; filename=file'})
 
     return {"status code": 200, "text": post[0].text}
 

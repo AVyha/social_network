@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import String, Integer, Table, Column, ForeignKey, UUID, DateTime
+from sqlalchemy import String, Integer, Table, Column, ForeignKey, UUID, DateTime, LargeBinary
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -34,5 +34,7 @@ class Post(Base):
     text: Mapped[str] = mapped_column(String(length=255), nullable=False)
     author: Mapped[str] = mapped_column(String(length=20), nullable=False)
     author_id = Column(UUID(as_uuid=True), nullable=False)
+    file = Column(LargeBinary)
+
     likes = relationship("User", secondary=post_details, backref="post")
     comments = relationship("User", secondary=post_comments, backref="post_comment")
